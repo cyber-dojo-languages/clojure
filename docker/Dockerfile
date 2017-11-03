@@ -12,7 +12,3 @@ RUN cd /tmp \
  && ln -sf /.m2 ~ \
  && chown -R nobody /.lein /.m2
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# install tini (for pid 1 zombie reaping)
-RUN apk add --update --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ tini
-ENTRYPOINT [ "/sbin/tini", "--" ]
