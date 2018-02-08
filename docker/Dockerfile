@@ -11,6 +11,3 @@ RUN cd /tmp \
  && ln -sf /.lein ~ \
  && ln -sf /.m2 ~ \
  && chown -R nobody /.lein /.m2
-
-COPY version.txt /tmp
-RUN lein --version | grep -f /tmp/version.txt
