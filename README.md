@@ -1,3 +1,5 @@
-# clojure x.y
+# clojure
 
-![Build Status](https://travis-ci.org/cyber-dojo-languages/clojure-x.y.svg?branch=master)
+![Build Status](https://travis-ci.org/cyber-dojo-languages/clojure.svg?branch=master)
+
+[version](./docker/version.txt)
