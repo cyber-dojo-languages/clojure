@@ -1,0 +1,8 @@
+FROM clojure:lein-2.7.1-alpine
+LABEL maintainer=frederic.merizen@soft-xki.com
+
+ENV LEIN_ROOT=1
+COPY project.clj /tmp
+
+COPY install.sh .
+RUN ./install.sh && rm -f ./install.sh
