@@ -1,5 +1,6 @@
 FROM clojure:temurin-8-lein-jammy
 LABEL maintainer=frederic.merizen@soft-xki.com
+LABEL maintainer=jon@jaggersoft.com
 
 ENV LEIN_ROOT=1
 COPY project.clj /tmp
