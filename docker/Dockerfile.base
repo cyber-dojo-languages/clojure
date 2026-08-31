@@ -1,4 +1,9 @@
-FROM clojure:temurin-8-lein-jammy
+# JDK 21 rather than 8, because a class-data archive needs it. A kata runs in a
+# container that is thrown away afterwards, so the JVM loads clojure's several
+# thousand classes from the jars every time; replaying an archive of them is
+# worth about a fifth of a run, and the archive support arrived in JDK 10.
+# Starting the JVM is quicker here too, on top of that.
+FROM clojure:temurin-21-lein-jammy
 LABEL maintainer=frederic.merizen@soft-xki.com
 LABEL maintainer=jon@jaggersoft.com
 
