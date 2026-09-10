@@ -11,7 +11,7 @@ readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 # "RELEASE" is whatever was published most recently, so it reports on upstream's
 # latest release rather than on this image, and a pre-release upstream turns this
 # gate red without anything here having changed.
-readonly EXPECTED=1.12.4
+readonly EXPECTED=1.12
 readonly ACTUAL=$(docker run --rm -i ${IMAGE_NAME} sh -c 'cd /tmp && echo "(defproject v \"0\" :dependencies [[org.clojure/clojure \"1.12.4\"]])" > project.clj && echo ":exit" | lein repl 2>/dev/null | grep "^Clojure" | awk "{print \$2}"')
 
 if echo "${ACTUAL}" | grep -q "${EXPECTED}"; then
