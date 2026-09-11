@@ -1,9 +1,15 @@
-# JDK 21 rather than 8, because a class-data archive needs it. A kata runs in a
-# container that is thrown away afterwards, so the JVM loads clojure's several
-# thousand classes from the jars every time; replaying an archive of them is
-# worth about a fifth of a run, and the archive support arrived in JDK 10.
-# Starting the JVM is quicker here too, on top of that.
-FROM clojure:temurin-21-lein-jammy
+# The floating lein tag, so a rebuild picks up the newest stable JDK, lein and
+# OS together. It is published as an index holding real amd64 and arm64
+# layers, so each runner builds from binaries its own kernel can exec.
+#
+# A JDK of 10 or newer is required, and the floating tag clears it. A kata
+# runs in a container that is thrown away afterwards, so the JVM loads
+# clojure's several thousand classes from the jars every time; replaying a
+# class-data archive of them is worth about a fifth of a run, and archive
+# support arrived in JDK 10.
+#
+# The clojure version a kata gets comes from project.clj, not from this tag.
+FROM clojure:lein
 LABEL maintainer=frederic.merizen@soft-xki.com
 LABEL maintainer=jon@jaggersoft.com
 
