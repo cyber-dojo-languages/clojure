@@ -8,13 +8,13 @@
 # class-data archive of them is worth about a fifth of a run, and archive
 # support arrived in JDK 10.
 #
-# The clojure version a kata gets comes from project.clj, not from this tag.
+# The clojure version a kata gets does not come from this tag. install.sh
+# resolves the newest stable clojure from Maven Central and records it.
 FROM clojure:lein
 LABEL maintainer=frederic.merizen@soft-xki.com
 LABEL maintainer=jon@jaggersoft.com
 
 ENV LEIN_ROOT=1
-COPY project.clj /tmp
 
 COPY install.sh .
 RUN ./install.sh && rm -f ./install.sh
