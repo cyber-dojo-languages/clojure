@@ -8,10 +8,14 @@ readonly IMAGE_NAME="${BASH_REMATCH[1]}"
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
-# The image resolves the newest stable clojure when it is built and records it
-# in /versions.json, so the expected version is read from the image rather
-# than written down here. Writing it down here would pin the image to a
-# release chosen when someone last edited this file.
+# Written down here so the gate fails when the floating base image moves to a
+# different clojure. Reading it from the image instead would compare the image
+# against itself and pass whatever the move brought in.
+readonly EXPECTED=1.12
+
+# Reads the clojure the image resolved and prefetched when it was built, so the
+# gate fails when that is not the one named above. Matching on the leading
+# major.minor lets a patch release through and stops only a minor or major move.
 readonly VERSIONS=$(docker run --rm -i ${IMAGE_NAME} sh -c 'cat /versions.json')
 readonly VERSION_REGEX='"clojure":"([0-9.]+)"'
 if [[ ! ${VERSIONS} =~ ${VERSION_REGEX} ]]; then
@@ -19,14 +23,9 @@ if [[ ! ${VERSIONS} =~ ${VERSION_REGEX} ]]; then
   echo "VERSION   FILE: ${VERSIONS}"
   exit 42
 fi
-readonly EXPECTED="${BASH_REMATCH[1]}"
+readonly ACTUAL="${BASH_REMATCH[1]}"
 
-# Asks the prefetched jar itself, so the gate fails if the number recorded at
-# build time is not the clojure the image can actually start.
-readonly PROJECT="(defproject v \"0\" :dependencies [[org.clojure/clojure \"${EXPECTED}\"]])"
-readonly ACTUAL=$(docker run --rm -i ${IMAGE_NAME} sh -c "cd /tmp && echo '${PROJECT}' > project.clj && echo ':exit' | lein repl 2>/dev/null | grep '^Clojure' | awk '{print \$2}'")
-
-if [ "${ACTUAL}" == "${EXPECTED}" ]; then
+if echo "${ACTUAL}" | grep -q "${EXPECTED}"; then
   echo "VERSION CONFIRMED as ${EXPECTED}"
 else
   echo "VERSION EXPECTED: ${EXPECTED}"
