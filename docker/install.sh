@@ -29,7 +29,15 @@ fi
 # Read by check_version.sh and by the images built on this one, so that all of
 # them state the version this image actually holds rather than repeating a
 # number written down somewhere else.
-echo "{\"clojure\":\"${CLOJURE_VERSION}\"}" > /versions.json
+cat > /versions.json <<EOF
+{
+  "language": {
+    "name": "Clojure",
+    "version": "${CLOJURE_VERSION}"
+  },
+  "test_frameworks": []
+}
+EOF
 
 cd /tmp
 cat > project.clj <<EOF

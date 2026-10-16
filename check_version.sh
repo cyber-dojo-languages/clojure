@@ -17,9 +17,10 @@ readonly EXPECTED=1.12
 # gate fails when that is not the one named above. Matching on the leading
 # major.minor lets a patch release through and stops only a minor or major move.
 readonly VERSIONS=$(docker run --rm -i ${IMAGE_NAME} sh -c 'cat /versions.json')
-readonly VERSION_REGEX='"clojure":"([0-9.]+)"'
+# A base image lists no test frameworks, so its one version is the language's.
+readonly VERSION_REGEX='"version": "([0-9.]+)"'
 if [[ ! ${VERSIONS} =~ ${VERSION_REGEX} ]]; then
-  echo "VERSION ERROR: /versions.json has no clojure property"
+  echo "VERSION ERROR: /versions.json has no language version"
   echo "VERSION   FILE: ${VERSIONS}"
   exit 42
 fi
