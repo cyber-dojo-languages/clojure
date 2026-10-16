@@ -26,9 +26,9 @@ if [ -z "${CLOJURE_VERSION}" ]; then
   exit 1
 fi
 
-# Read by check_version.sh and by the images built on this one, so that all of
-# them state the version this image actually holds rather than repeating a
-# number written down somewhere else.
+# Read by the images built on this one, so that all of them state the version
+# this image actually holds rather than repeating a number written down
+# somewhere else.
 cat > /versions.json <<EOF
 {
   "language": {
